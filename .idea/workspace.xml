@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="cbe07639-f900-4001-8b13-22ff5ddd1ef7" name="更改" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="customMavenHome" value="C:\Program Files\LaiXinDownloads\Pro\Maven\apache-maven-3.9.15" />
+        <option name="mavenHomeTypeForPersistence" value="CUSTOM" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="3ATIRIHI6stUkimSCsMfYbApmmR" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.course-selection-system [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.course-selection-system [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.course-selection-system [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.course-selection-system [org.apache.maven.plugins:maven-clean-plugin:3.3.2:clean].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.SpringbootApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/laixin/Documents/CC-Folder/CourseSelectSystem&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\LaiXinDownloads\\Pro\\IDEA\\IntelliJ IDEA 2026.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\ALLDownload\AAA\基于Spring Boot+Vue的高校课程管理系统的设计与实现\vue3\src\assets" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.SpringbootApplication">
+    <configuration name="SpringbootApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="course-selection-system" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.springboot.SpringbootApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/vue3/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.dev" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-26cb7f24e5b0-intellij.indexing.shared.core-IU-253.29346.240" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.29346.240" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="cbe07639-f900-4001-8b13-22ff5ddd1ef7" name="更改" comment="" />
+      <created>1772610123485</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1772610123485</updated>
+      <workItem from="1772610124777" duration="6720000" />
+      <workItem from="1772628585409" duration="1163000" />
+      <workItem from="1772629761628" duration="346000" />
+      <workItem from="1772630118049" duration="929000" />
+      <workItem from="1772631072443" duration="669000" />
+      <workItem from="1772631753272" duration="2357000" />
+      <workItem from="1772635184846" duration="82000" />
+      <workItem from="1772635325388" duration="471000" />
+      <workItem from="1772672670693" duration="5538000" />
+      <workItem from="1772763512780" duration="513000" />
+      <workItem from="1772764261856" duration="9432000" />
+      <workItem from="1772795248102" duration="1152000" />
+      <workItem from="1772799515636" duration="157000" />
+      <workItem from="1772807229066" duration="761000" />
+      <workItem from="1772846530011" duration="4489000" />
+      <workItem from="1772851690210" duration="2648000" />
+      <workItem from="1772854482008" duration="460000" />
+      <workItem from="1772856071104" duration="5460000" />
+      <workItem from="1772878277135" duration="175000" />
+      <workItem from="1772885664302" duration="63000" />
+      <workItem from="1772885843914" duration="628000" />
+      <workItem from="1772942612555" duration="86000" />
+      <workItem from="1772947796919" duration="6149000" />
+      <workItem from="1772967892566" duration="684000" />
+      <workItem from="1773021480350" duration="3525000" />
+      <workItem from="1773025275889" duration="8000" />
+      <workItem from="1773025471240" duration="9669000" />
+      <workItem from="1773049615586" duration="1841000" />
+      <workItem from="1773135665419" duration="1064000" />
+      <workItem from="1773194753083" duration="432000" />
+      <workItem from="1778395854553" duration="880000" />
+      <workItem from="1778399001846" duration="439000" />
+      <workItem from="1778405386920" duration="6077000" />
+      <workItem from="1778416953783" duration="3512000" />
+      <workItem from="1778486111110" duration="239000" />
+      <workItem from="1778486361979" duration="2151000" />
+      <workItem from="1778488594890" duration="113000" />
+      <workItem from="1778488717359" duration="1997000" />
+      <workItem from="1778490778226" duration="1874000" />
+      <workItem from="1778492776071" duration="136000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-core" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.security:spring-security-core" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.validation:jakarta.validation-api" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.persistence:jakarta.persistence-api" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.data:spring-data-commons" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.boot:spring-boot" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-webmvc" />
+    <option featureType="dependencySupport" implementationName="java:org.projectlombok:lombok" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

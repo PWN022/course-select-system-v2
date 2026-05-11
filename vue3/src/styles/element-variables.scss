@@ -1,0 +1,118 @@
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': (
+      'base': #2b579a, // 【修改为教务蓝】给人严谨、专业、学术的感觉
+    ),
+    'success': (
+      'base': #4CAF50, 
+    ),
+    'warning': (
+      'base': #FF9800, 
+    ),
+    'danger': (
+      'base': #F44336, 
+    ),
+    'info': (
+      'base': #607D8B, 
+    )
+  ),
+);
+
+@use "element-plus/theme-chalk/src/index.scss" as *;
+
+/* 强制通过 CSS 变量覆盖，确保全局生效 */
+:root {
+  --el-color-primary: #2b579a;
+  --el-color-primary-light-3: #587ebd;
+  --el-color-primary-light-5: #82a1cf;
+  --el-color-primary-light-7: #acbfe0;
+  --el-color-primary-light-9: #eaf0f8;
+  --el-color-primary-dark-2: #1e3f70;
+}
+
+.el-card {
+  border: none !important;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05) !important; // 稍微加一点微弱阴影，更有质感
+  border-radius: 4px; // 方正一点的卡片
+}
+
+.el-select{
+  width: 150px !important;
+}
+
+.el-switch__core .el-switch__action{
+  border-radius: 50% !important;
+}
+
+.el-radio__inner {
+  border-radius: 50% !important;
+  &::after {
+    border-radius: 50% !important;
+  }
+}
+
+// 对话框样式覆盖 - 更加正式
+.el-dialog {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 6px;
+
+  .el-dialog__header {
+    margin: 0;
+    padding: 15px 20px;
+    border-bottom: 1px solid #ebeef5;
+    background-color: #f8f9fb; // 表头带点浅灰背景
+    border-radius: 6px 6px 0 0;
+
+    .el-dialog__title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+  }
+
+  .el-dialog__body {
+    padding: 24px;
+  }
+
+  .el-dialog__footer {
+    padding: 12px 20px;
+    border-top: 1px solid #ebeef5;
+    background-color: #f8f9fb;
+    border-radius: 0 0 6px 6px;
+  }
+}
+
+// 表单样式覆盖
+.el-form {
+  .el-form-item {
+    margin-bottom: 22px;
+
+    .el-form-item__label {
+      font-weight: bold; // 表单标签加粗，显得严谨
+      color: #444;
+      padding-bottom: 8px;
+    }
+  }
+}
+
+// 输入框样式
+.el-input {
+  .el-input__wrapper {
+    box-shadow: 0 0 0 1px #dcdfe6 inset;
+    transition: all 0.2s;
+    border-radius: 4px;
+
+    &:hover {
+      box-shadow: 0 0 0 1px #2b579a inset;
+    }
+
+    &.is-focus {
+      box-shadow: 0 0 0 1px #2b579a inset !important;
+    }
+  }
+
+  &.is-disabled .el-input__wrapper {
+    background-color: #f5f7fa;
+    box-shadow: 0 0 0 1px #e4e7ed inset;
+  }
+}
