@@ -189,7 +189,7 @@
 </template>
 
 <script setup>
-import {onMounted, reactive, ref} from 'vue'
+import {onMounted, reactive, ref, watch} from 'vue'
 import {ElMessageBox} from 'element-plus'
 import request from '@/utils/request'
 import {useUserStore} from '@/store/user'
@@ -269,6 +269,16 @@ onMounted(() => {
   fetchSemesters()
 })
 
+// 选课程后联查选课表，只加载该课程已通过的学生（添加时清空学生，编辑时保留）
+watch(() => form.courseId, (newVal) => {
+  if (newVal) {
+    if (dialogTitle.value === '添加成绩') form.studentId = ''
+    fetchStudents(newVal)
+  } else {
+    fetchStudents()
+  }
+})
+
 // 格式化日期时间
 const formatDateTime = (dateTime) => {
   if (!dateTime) return ''
@@ -305,17 +315,25 @@ const fetchScores = async () => {
   }
 }
 
-// 获取学生列表
-const fetchStudents = async () => {
-  const params = {
-    teacherId: userStore.isTeacher ?  userStore.teacherInfo?.id:null
-  }
+// 获取学生列表，传 courseId 时联查选课表只取已通过的学生
+const fetchStudents = async (courseId) => {
   try {
-    await request.get('/student/all', params, {
-      onSuccess: (res) => {
-        studentOptions.value = res || []
-      }
-    })
+    if (courseId) {
+      await request.get(`/student-course/course/${courseId}`, {}, {
+        onSuccess: (res) => {
+          studentOptions.value = (res || []).map(sc => ({
+            id: sc.studentId,
+            name: sc.studentName,
+            studentNo: sc.studentNo
+          }))
+        }
+      })
+    } else {
+      const params = { teacherId: userStore.isTeacher ? userStore.teacherInfo?.id : null }
+      await request.get('/student/all', params, {
+        onSuccess: (res) => { studentOptions.value = res || [] }
+      })
+    }
   } catch (error) {
     console.error('获取学生列表失败:', error)
   }
@@ -420,6 +438,13 @@ const handleEdit = (row) => {
       form[key] = row[key]
     }
   })
+  // 确保当前学生和教师在编辑时可见
+  if (row.studentName && !studentOptions.value.some(s => s.id === row.studentId)) {
+    studentOptions.value.push({ id: row.studentId, name: row.studentName })
+  }
+  if (row.teacherName && !teacherOptions.value.some(t => t.id === row.teacherId)) {
+    teacherOptions.value.push({ id: row.teacherId, name: row.teacherName })
+  }
   dialogVisible.value = true
 }
 

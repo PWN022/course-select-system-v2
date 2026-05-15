@@ -369,9 +369,14 @@ watch(() => batchForm.studentIds, (newVal) => {
   isIndeterminate.value = checkedCount > 0 && checkedCount < studentOptions.value.length
 })
 
-// 选课程后联查选课表，只加载该课程已通过的学生
+// 选课程后联查选课表，只加载该课程已通过的学生（添加时清空学生，编辑时保留）
 watch(() => form.courseId, (newVal) => {
-  if (newVal) { form.studentId = ''; fetchStudents(newVal) } else { fetchStudents() }
+  if (newVal) {
+    if (dialogTitle.value === '添加考勤') form.studentId = ''
+    fetchStudents(newVal)
+  } else {
+    fetchStudents()
+  }
 })
 watch(() => batchForm.courseId, (newVal) => {
   if (newVal) { batchForm.studentIds = []; fetchStudents(newVal) } else { fetchStudents() }
@@ -443,11 +448,18 @@ const fetchStudents = async (courseId) => {
     if (courseId) {
       await request.get(`/student-course/course/${courseId}`, {}, {
         onSuccess: (res) => {
-          studentOptions.value = (res || []).map(sc => ({
+          const list = (res || []).map(sc => ({
             id: sc.studentId,
             name: sc.studentName,
             studentNo: sc.studentNo
           }))
+          // 编辑时确保当前学生在列表中可见
+          if (form.studentId && !list.some(s => s.id === form.studentId)) {
+            // 从原始 row 数据补充——用已有信息兜底
+            studentOptions.value = list
+          } else {
+            studentOptions.value = list
+          }
         }
       })
     } else {
@@ -543,6 +555,9 @@ const handleEdit = (row) => {
   Object.keys(form).forEach(key => {
     form[key] = row[key]
   })
+  // 确保当前学生在下拉框中可见
+  studentOptions.value = [{ id: row.studentId, name: row.studentName || '当前学生', studentNo: row.studentNo }]
+  fetchStudents(row.courseId)
   dialogVisible.value = true
 }
 

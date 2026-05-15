@@ -148,7 +148,7 @@ public class StudentService {
             } else {
                 map.put("studentType", "全校学生"); // 管理员看到的是这个
             }
-            // ==========================================
+
 
             mapList.add(map);
         }
@@ -316,6 +316,17 @@ public class StudentService {
         }
 
         if (classMapper.selectById(student.getClassId()) == null) throw new ServiceException("班级不存在");
+
+        // 同步更新 user 表的姓名
+        Student dbStudent = studentMapper.selectById(student.getId());
+        if (student.getName() != null && StringUtils.isNotBlank(student.getName())) {
+            User user = userMapper.selectById(dbStudent.getUserId());
+            if (user != null) {
+                user.setName(student.getName());
+                userMapper.updateById(user);
+            }
+        }
+
         if (studentMapper.updateById(student) <= 0) throw new ServiceException("更新学生失败");
     }
 

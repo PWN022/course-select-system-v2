@@ -215,12 +215,22 @@ public class TeacherService {
             throw new ServiceException("教师编号已被其他教师使用");
         }
         
+        // 同步更新 user 表的姓名
+        Teacher dbTeacher = teacherMapper.selectById(teacher.getId());
+        if (teacher.getName() != null && StringUtils.isNotBlank(teacher.getName())) {
+            User user = userMapper.selectById(dbTeacher.getUserId());
+            if (user != null) {
+                user.setName(teacher.getName());
+                userMapper.updateById(user);
+            }
+        }
+
         // 更新教师信息
         if (teacherMapper.updateById(teacher) <= 0) {
             throw new ServiceException("更新教师失败");
         }
     }
-    
+
     /**
      * 删除教师信息（包括级联删除教师课程关联，并验证是否为班主任）
      * @param id 教师ID

@@ -49,7 +49,7 @@ public class AttendanceService {
     private StudentCourseMapper studentCourseMapper;
 
     /**
-     * 核心权限拦截器：确保老师只能看 【自己教的某门课】 下的 【选了这门课且绑定自己为老师的学生】
+     * 核心权限拦截器：确保老师只能看 自己教的某门课 下的 选了这门课且绑定自己为老师的学生
      */
     private void applyTeacherFilter(LambdaQueryWrapper<Attendance> wrapper, String teacherId) {
         if (StringUtils.isNotBlank(teacherId) && !"undefined".equals(teacherId)) {

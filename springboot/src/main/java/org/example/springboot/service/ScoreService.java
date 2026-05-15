@@ -10,6 +10,7 @@ import org.example.springboot.entity.Class;
 import org.example.springboot.exception.ServiceException;
 import org.example.springboot.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -147,22 +148,26 @@ public class ScoreService {
             throw new ServiceException("该学生未选修此课程或并非您名下的学生");
         }
         
-        // 检查是否已存在成绩记录
-        LambdaQueryWrapper<Score> scoreWrapper = new LambdaQueryWrapper<>();
-        scoreWrapper.eq(Score::getStudentId, score.getStudentId())
-                   .eq(Score::getCourseId, score.getCourseId())
-                   .eq(Score::getSemester, score.getSemester());
-        if (scoreMapper.selectCount(scoreWrapper) > 0) {
-            throw new ServiceException("该学生在此学期已有该课程的成绩记录");
-        }
-        
         // 设置等级
         if (score.getScore() != null && score.getGrade() == null) {
             score.setGrade(calculateGrade(score.getScore()));
         }
-        
-        // 插入成绩记录
-        scoreMapper.insert(score);
+
+        // 先尝试插入，联合唯一索引冲突则自动转为更新覆盖
+        try {
+            scoreMapper.insert(score);
+        } catch (DuplicateKeyException e) {
+            LambdaQueryWrapper<Score> scoreWrapper = new LambdaQueryWrapper<>();
+            scoreWrapper.eq(Score::getStudentId, score.getStudentId())
+                       .eq(Score::getCourseId, score.getCourseId())
+                       .eq(Score::getSemester, score.getSemester());
+            Score existing = scoreMapper.selectOne(scoreWrapper);
+            existing.setScore(score.getScore());
+            existing.setGrade(score.getGrade());
+            existing.setTeacherId(score.getTeacherId());
+            if (score.getComment() != null) existing.setComment(score.getComment());
+            scoreMapper.updateById(existing);
+        }
     }
     
     /**
