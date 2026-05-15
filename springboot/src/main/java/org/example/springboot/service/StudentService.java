@@ -8,6 +8,7 @@ import org.example.springboot.entity.*;
 import org.example.springboot.entity.Class; // 确保导入的是你自定义的实体类 Class
 import org.example.springboot.exception.ServiceException;
 import org.example.springboot.mapper.*;
+import org.example.springboot.util.PinyinUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -220,7 +221,7 @@ public class StudentService {
             student.setUsername(user.getUsername());
             student.setName(user.getName());
 
-            // ======== 【核心修复：把User表里的电话和邮箱赋值给Student】 ========
+            // 把User表里的电话和邮箱赋值给Student
             student.setPhone(user.getPhone());
             student.setEmail(user.getEmail());
         }
@@ -278,14 +279,16 @@ public class StudentService {
 
         if (classMapper.selectById(student.getClassId()) == null) throw new ServiceException("班级不存在");
 
-        // 如果没有指定关联用户，则自动创建一个新账号（用户名为学号）
+        // 如果没有指定关联用户，则自动创建一个新账号（用户名为拼音）
         if (student.getUserId() == null) {
             User user = new User();
-            user.setUsername(student.getStudentNo());
+            // 用户名取中文姓名拼音，姓名存 name 字段
+            String pinyinName = PinyinUtils.toPinyin(student.getName());
+            user.setUsername(pinyinName);
             user.setPassword(passwordEncoder.encode(defaultPassword));
             user.setRoleCode("STUDENT");
-            user.setName("");
-            user.setEmail(student.getStudentNo() + "@school.edu");
+            user.setName(student.getName());
+            user.setEmail(pinyinName + "@s.school.edu.cn");   // 邮箱也用拼音
             user.setPhone("13800000000");
             user.setStatus(1);
             if (userMapper.insert(user) <= 0) throw new ServiceException("创建学生用户账号失败");

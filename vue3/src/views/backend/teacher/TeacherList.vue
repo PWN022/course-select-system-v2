@@ -90,6 +90,10 @@
         <el-form-item label="教师编号" prop="teacherNo">
           <el-input v-model="form.teacherNo" placeholder="请输入教师编号" />
         </el-form-item>
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model="form.name" placeholder="请输入教师中文姓名" />
+        </el-form-item>
+
         <el-form-item label="性别" prop="gender">
           <el-radio-group v-model="form.gender">
             <el-radio label="M">男</el-radio>
@@ -147,6 +151,7 @@ const formRef = ref(null)
 const form = reactive({
   id: null,
   teacherNo: '',
+  name: '',
   gender: GENDER.MALE,
   title: '',
   // 关联用户由后端自动创建账号，前台不再手动选择

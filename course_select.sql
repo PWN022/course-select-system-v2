@@ -11,7 +11,7 @@
  Target Server Version : 50726 (5.7.26)
  File Encoding         : 65001
 
- Date: 10/05/2026 19:21:32
+ Date: 15/05/2026 13:09:12
 */
 
 SET NAMES utf8mb4;
@@ -191,7 +191,7 @@ CREATE TABLE `student`  (
   INDEX `idx_user_id`(`user_id`) USING BTREE,
   CONSTRAINT `fk_student_class` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `fk_student_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '学生信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '学生信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of student
@@ -211,6 +211,8 @@ INSERT INTO `student` VALUES (12, 'S20240912', 'F', '2004-06-27', '1101152004062
 INSERT INTO `student` VALUES (13, 'S20240913', 'M', '2003-10-08', '110116200310080131', '北京市怀柔区龙山街道', 3, 22, '2024-08-26 09:50:00', '2024-08-26 09:50:00');
 INSERT INTO `student` VALUES (14, 'S20240914', 'F', '2005-07-22', '110117200507220142', '北京市平谷区滨河街道', 4, 23, '2024-08-26 13:40:00', '2024-09-30 16:20:00');
 INSERT INTO `student` VALUES (15, 'S20260101', 'M', '2002-07-08', '110109200207080057', '北京市门头沟区大台街道', 7, 29, '2026-03-09 16:38:45', '2026-03-09 16:40:34');
+INSERT INTO `student` VALUES (16, 'S20260102', 'M', '2006-04-14', '110109200604150059', '北京市门头沟区大台街道', 7, 34, '2026-05-10 21:30:11', '2026-05-10 21:30:11');
+INSERT INTO `student` VALUES (18, 'S20260103', 'F', '2005-06-18', '110117200506180168', '北京市平谷区滨河街道', 7, 36, '2026-05-14 18:21:12', '2026-05-14 18:21:12');
 
 -- ----------------------------
 -- Table structure for student_course
@@ -311,7 +313,7 @@ CREATE TABLE `teacher_course`  (
   INDEX `idx_course_id`(`course_id`) USING BTREE,
   CONSTRAINT `fk_tc_course` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_tc_teacher` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '教师课程关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '教师课程关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of teacher_course
@@ -328,6 +330,7 @@ INSERT INTO `teacher_course` VALUES (9, 9, 1, '2024-2025-1', '2024-06-15 09:40:0
 INSERT INTO `teacher_course` VALUES (10, 10, 10, '2024-2025-1', '2024-06-15 09:45:00');
 INSERT INTO `teacher_course` VALUES (11, 12, 5, '2024-2025-2', '2025-03-15 09:00:00');
 INSERT INTO `teacher_course` VALUES (12, 11, 9, '2025-2026-1', '2025-09-15 11:29:31');
+INSERT INTO `teacher_course` VALUES (13, 1, 1, '2024-2025-2', '2025-05-11 17:42:58');
 
 -- ----------------------------
 -- Table structure for user
@@ -348,13 +351,13 @@ CREATE TABLE `user`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_username`(`username`) USING BTREE,
   UNIQUE INDEX `uk_email`(`email`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'admin', '$2a$10$Cc6gX7Jel5UtKreBdrY8SeRiqwqEuccdySNafjQRMtz30KE92sPaS', 'admin@school.edu.cn', '13900001111', 'ADMIN', '超级管理员', '/img/1772619693217.png', 1, '2024-01-10 09:00:00', '2026-03-16 11:13:51');
-INSERT INTO `user` VALUES (2, 'zhangwei', '$2a$10$Cc6gX7Jel5UtKreBdrY8SeRiqwqEuccdySNafjQRMtz30KE92sPaS', 'zhangwei@t.school.edu.cn', '13900001112', 'TEACHER', '张伟', NULL, 1, '2024-01-15 10:30:00', '2024-02-08 02:51:16');
+INSERT INTO `user` VALUES (1, 'admin', '$2a$10$Cc6gX7Jel5UtKreBdrY8SeRiqwqEuccdySNafjQRMtz30KE92sPaS', 'admin@school.edu.cn', '13900000000', 'ADMIN', '超级管理员', '/img/1772619693217.png', 1, '2024-01-10 09:00:00', '2026-05-11 17:44:00');
+INSERT INTO `user` VALUES (2, 'zhangwei', '$2a$10$R1GVVONRFciUBZg6HauTUeLuTFBh76ws16ZmQRp4kIirJiNwrsixG', 'zhangwei@t.school.edu.cn', '13900001112', 'TEACHER', '张伟', NULL, 1, '2024-01-15 10:30:00', '2024-02-08 02:51:16');
 INSERT INTO `user` VALUES (3, 'liujing', '$2a$10$Cc6gX7Jel5UtKreBdrY8SeRiqwqEuccdySNafjQRMtz30KE92sPaS', 'liujing@t.school.edu.cn', '13900001113', 'TEACHER', '刘静', NULL, 1, '2024-01-16 09:15:00', '2024-05-24 04:34:51');
 INSERT INTO `user` VALUES (4, 'wangfang', '$2a$10$Cc6gX7Jel5UtKreBdrY8SeRiqwqEuccdySNafjQRMtz30KE92sPaS', 'wangfang@t.school.edu.cn', '13900001114', 'TEACHER', '王芳', NULL, 1, '2024-01-18 11:20:00', '2025-08-29 14:20:30');
 INSERT INTO `user` VALUES (5, 'chengang', '$2a$10$Cc6gX7Jel5UtKreBdrY8SeRiqwqEuccdySNafjQRMtz30KE92sPaS', 'chengang@t.school.edu.cn', '13900001115', 'TEACHER', '陈刚', NULL, 1, '2024-01-20 14:45:00', '2024-11-10 09:58:00');
@@ -380,7 +383,9 @@ INSERT INTO `user` VALUES (24, 'xuyang', '$2a$10$Cc6gX7Jel5UtKreBdrY8SeRiqwqEucc
 INSERT INTO `user` VALUES (25, 'linting', '$2a$10$Cc6gX7Jel5UtKreBdrY8SeRiqwqEuccdySNafjQRMtz30KE92sPaS', 'linting@t.school.edu.cn', '13900001135', 'TEACHER', '林婷', NULL, 1, '2024-02-05 14:15:00', '2025-09-16 01:32:25');
 INSERT INTO `user` VALUES (26, 'qiyonghua', '$2a$10$Zy6TI00KNnraoJXKK/hoferWlb/WjIHx1mp7u3l2Xd4IJgYzTXGu6', 'qiyonghua@t.school.edu.cn', '13900011100', 'TEACHER', '祁永华', NULL, 1, '2025-09-01 11:15:39', '2026-03-06 11:16:52');
 INSERT INTO `user` VALUES (27, 'liangliwei', '$2a$10$V12zSoYVZ3UBzFkkErUJLuUY3IW2/hjbd2E7hzsHH7sQQA5wjCsOy', 'liangliwei@t.school.edu.cn', '13900011111', 'TEACHER', '梁力伟', NULL, 1, '2026-01-15 11:22:06', '2026-03-06 11:23:22');
-INSERT INTO `user` VALUES (28, 'test', '$2a$10$xVlaJGQIHhHKs.UNaxQHRu2ManpZsiEvbTxaTkf36Ke4Jy6ord4F2', 'test@school.edu.cn', '13710101010', 'TEACHER', '测试教师用户', NULL, 0, '2026-03-06 18:00:32', '2026-03-09 16:37:27');
-INSERT INTO `user` VALUES (29, 'hanchen', '$2a$10$LDt4u0Woof4EOp.IklrjweikoqYQvs30jzR7LQIchx4.Sjon0g03q', 'ceshi@school.edu.cn', '13701010101', 'STUDENT', '韩琛', NULL, 1, '2026-03-06 18:04:37', '2026-03-09 16:37:14');
+INSERT INTO `user` VALUES (28, 'wangqi', '$2a$10$xVlaJGQIHhHKs.UNaxQHRu2ManpZsiEvbTxaTkf36Ke4Jy6ord4F2', 'wangqi@t.school.edu.cn', '13710101010', 'TEACHER', '王琦', NULL, 0, '2026-03-06 18:00:32', '2026-05-15 12:51:59');
+INSERT INTO `user` VALUES (29, 'hanchen', '$2a$10$LDt4u0Woof4EOp.IklrjweikoqYQvs30jzR7LQIchx4.Sjon0g03q', 'ceshi@t.school.edu.cn', '13701010101', 'STUDENT', '韩琛', NULL, 1, '2026-03-06 18:04:37', '2026-05-14 17:59:15');
+INSERT INTO `user` VALUES (34, 'yehua', '$2a$10$0cWVbm6FScN7W9d7Azm.oOy0n/dyt9Zw4ycsm6Ml465jRVbuEM8ei', 'yehua@t.school.edu.cn', '13701010111', 'STUDENT', '叶华', NULL, 1, '2026-05-10 21:30:10', '2026-05-14 17:59:17');
+INSERT INTO `user` VALUES (36, 'sunliye', '$2a$10$VSD/yt3icxU8xEdT0Z6HPO/St/jt47oRT8gRpacwqyU0UCmxWbiJW', 'sunliye@s.school.edu.cn', '18832193460', 'STUDENT', '孙立烨', NULL, 1, '2026-05-14 18:21:12', '2026-05-14 18:21:48');
 
 SET FOREIGN_KEY_CHECKS = 1;

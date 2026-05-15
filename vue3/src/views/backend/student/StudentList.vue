@@ -114,6 +114,9 @@
         <el-form-item label="学号" prop="studentNo">
           <el-input v-model="form.studentNo" placeholder="请输入学号" />
         </el-form-item>
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model="form.name" placeholder="请输入学生中文姓名" />
+        </el-form-item>
         <el-form-item label="性别" prop="gender">
           <el-radio-group v-model="form.gender">
             <el-radio label="M">男</el-radio>
@@ -193,6 +196,7 @@ const formRef = ref(null)
 const form = reactive({
   id: null,
   studentNo: '',
+  name: '',
   gender: GENDER.MALE,
   birthDate: '',
   idCard: '',

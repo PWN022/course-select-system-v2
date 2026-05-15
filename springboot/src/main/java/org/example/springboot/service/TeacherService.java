@@ -11,6 +11,7 @@ import org.example.springboot.mapper.TeacherMapper;
 import org.example.springboot.mapper.UserMapper;
 import org.example.springboot.mapper.TeacherCourseMapper;
 import org.example.springboot.mapper.ClassMapper;
+import org.example.springboot.util.PinyinUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -169,14 +170,15 @@ public class TeacherService {
             throw new ServiceException("教师编号已存在");
         }
 
-        // 如果没有指定关联用户，则自动创建一个新账号（用户名为教师编号）
+        // 如果没有指定关联用户，则自动创建一个新账号（用户名取中文姓名拼音）
         if (teacher.getUserId() == null) {
             User user = new User();
-            user.setUsername(teacher.getTeacherNo());
+            String pinyinName = PinyinUtils.toPinyin(teacher.getName());
+            user.setUsername(pinyinName);
             user.setPassword(passwordEncoder.encode(defaultPassword));
             user.setRoleCode("TEACHER");
-            user.setName("");
-            user.setEmail(teacher.getTeacherNo() + "@school.edu");
+            user.setName(teacher.getName());
+            user.setEmail(pinyinName + "@t.school.edu.cn");
             user.setPhone("13800000000");
             user.setStatus(1);
             if (userMapper.insert(user) <= 0) throw new ServiceException("创建教师用户账号失败");
