@@ -339,8 +339,8 @@ const handleEdit = (row) => {
   })
 
   // 打印排错日志
-  // console.log("【排查1】当前点击的学生数据:", row)
-  // console.log("【排查2】下拉框获取到的所有账号:", JSON.parse(JSON.stringify(userList.value)))
+  // console.log("排查当前点击的学生数据:", row)
+  // console.log("排查下拉框获取到的所有账号:", JSON.parse(JSON.stringify(userList.value)))
 
   if (userList.value && userList.value.length > 0) {
     // 后端漏传了userId，前端自动根据“学号”或“姓名”强行从列表里找到对应的账号

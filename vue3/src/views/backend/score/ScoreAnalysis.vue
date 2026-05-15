@@ -292,7 +292,7 @@ const fetchScores = async () => {
   try {
     await request.get('/score/page', {
       currentPage: currentPage.value,
-      size: pageSize.value,
+      pageSize: pageSize.value,
       courseId: searchForm.courseId || null,
       semester: searchForm.semester || null,
       classId: searchForm.classId || null,
@@ -357,7 +357,7 @@ const fetchScoreStatistics = async () => {
   try {
     const params = {
       currentPage: 1,
-      size: 1000, // 获取足够多的数据进行统计
+      pageSize: 1000, // 获取足够多的数据进行统计
       courseId: searchForm.courseId || null,
       semester: searchForm.semester || null,
       classId: searchForm.classId || null,

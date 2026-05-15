@@ -10,6 +10,7 @@ import org.example.springboot.mapper.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -207,7 +208,8 @@ public class StudentCourseService  {
      * 学生申请选课
      */
 
-    @Transactional
+    // READ_COMMITTED：拿到行锁后 count 能读到其他事务已提交的 insert，防止并发超卖
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void applyCourse(StudentCourse studentCourse) {
         // 检查学生是否存在
         if (studentMapper.selectById(studentCourse.getStudentId()) == null) {
@@ -242,12 +244,14 @@ public class StudentCourseService  {
             throw new ServiceException("该学生在该学期已选择此课程");
         }
 
-        // 防超卖校验加上 teacherId
-        Course course = courseMapper.selectById(studentCourse.getCourseId());
+        // 防超卖：先锁行再读，保证快照建立在加锁之后
+        Course course = courseMapper.selectByIdForUpdate(studentCourse.getCourseId());
+        if (course == null) throw new ServiceException("课程不存在");
         if (course.getMaxCapacity() != null && course.getMaxCapacity() > 0) {
+
             LambdaQueryWrapper<StudentCourse> countWrapper = new LambdaQueryWrapper<>();
             countWrapper.eq(StudentCourse::getCourseId, studentCourse.getCourseId())
-                    .eq(StudentCourse::getTeacherId, studentCourse.getTeacherId()) // ★ 精确校验该教师名额
+                    .eq(StudentCourse::getTeacherId, studentCourse.getTeacherId()) // 精确校验该教师名额
                     .eq(StudentCourse::getSemester, studentCourse.getSemester())
                     // 锁定占用名额的状态
                     .in(StudentCourse::getStatus, "已通过", "待审批", "退课待审批");
@@ -270,7 +274,8 @@ public class StudentCourseService  {
     /**
      * 批量申请选课
      */
-    @Transactional
+    // READ_COMMITTED：批量选课同样需要读到最新名额
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void batchApplyCourses(Long studentId, List<Long> courseIds, List<Long> teacherIds, String semester) {
         if (courseIds == null || courseIds.isEmpty() || teacherIds == null || teacherIds.isEmpty() || courseIds.size() != teacherIds.size()) {
             throw new ServiceException("选课参数错误");
@@ -313,12 +318,14 @@ public class StudentCourseService  {
                 continue; // 已选择此课程，跳过
             }
 
-            // ============ 【核心修复：批量校验加上 teacherId】 ============
-            Course course = courseMapper.selectById(courseId);
+            // 批量选课加锁：先锁行再读，快照在锁之后建立
+            Course course = courseMapper.selectByIdForUpdate(courseId);
+            if (course == null) throw new ServiceException("课程不存在");
             if (course.getMaxCapacity() != null && course.getMaxCapacity() > 0) {
+
                 LambdaQueryWrapper<StudentCourse> countWrapper = new LambdaQueryWrapper<>();
                 countWrapper.eq(StudentCourse::getCourseId, courseId)
-                        .eq(StudentCourse::getTeacherId, teacherId) // ★ 精确校验该教师名额
+                        .eq(StudentCourse::getTeacherId, teacherId) // 精确校验该教师名额
                         .eq(StudentCourse::getSemester, semester)
                         .ne(StudentCourse::getStatus, "已拒绝");
 
@@ -371,7 +378,8 @@ public class StudentCourseService  {
      * 审批学生选课申请
      */
 
-    @Transactional
+    // READ_COMMITTED：审批通过时也需要读到最新名额
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void approveStudentCourse(Long id, String status) {
         // 检查选课记录是否存在
         StudentCourse studentCourse = studentCourseMapper.selectById(id);
@@ -382,8 +390,11 @@ public class StudentCourseService  {
         // 加上 teacherId，隔离A、B老师的教学班容量
         // 如果是同意通过，进行容量复核！
         if ("已通过".equals(status)) {
-            Course course = courseMapper.selectById(studentCourse.getCourseId());
+            // 审批通过前加锁验名额，快照建立在锁之后
+            Course course = courseMapper.selectByIdForUpdate(studentCourse.getCourseId());
+            if (course == null) throw new ServiceException("课程不存在");
             if (course.getMaxCapacity() != null && course.getMaxCapacity() > 0) {
+
                 LambdaQueryWrapper<StudentCourse> countWrapper = new LambdaQueryWrapper<>();
                 countWrapper.eq(StudentCourse::getCourseId, studentCourse.getCourseId())
                         .eq(StudentCourse::getTeacherId, studentCourse.getTeacherId()) // 增加这一行隔离教师

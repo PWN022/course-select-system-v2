@@ -196,6 +196,44 @@
           </el-card>
         </el-col>
       </el-row>
+
+      <!-- 管理员可查看 按课程看成绩等级分布 -->
+      <div class="stats-section">
+        <h3 class="section-title">
+          成绩等级分布
+          <el-select v-model="gradeDistCourseId" placeholder="请选择课程" size="small"
+            style="width:220px;margin-left:12px" @change="fetchGradeDistribution">
+            <el-option v-for="c in courseList" :key="c.id" :label="c.courseName" :value="c.id" />
+          </el-select>
+        </h3>
+        <el-row :gutter="20" class="chart-row">
+          <el-col :xs="24" :md="12">
+            <el-card class="chart-card">
+              <template #header>
+                <div class="card-header"><span>各等级人数占比</span></div>
+              </template>
+              <div id="grade-dist-chart" class="chart-container"></div>
+            </el-card>
+          </el-col>
+          <el-col :xs="24" :md="12">
+            <el-card class="chart-card">
+              <template #header>
+                <div class="card-header"><span>统计概览</span></div>
+              </template>
+              <div class="grade-stats">
+                <div class="grade-stat-item">
+                  <span class="grade-stat-label">总人数</span>
+                  <span class="grade-stat-value">{{ gradeDistStats.total || 0 }}</span>
+                </div>
+                <div class="grade-stat-item">
+                  <span class="grade-stat-label">及格率</span>
+                  <span class="grade-stat-value">{{ gradeDistStats.passRate || '--' }}</span>
+                </div>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      </div>
     </div>
   </div>
 </template>
@@ -266,6 +304,7 @@ let classChart = null
 let majorChart = null
 let genderChart = null
 let titleChart = null
+let gradeDistChart = null
 
 // 学生统计数据
 const studentStats = reactive({
@@ -282,6 +321,11 @@ const teacherStats = reactive({
   femaleTeachers: 0,
   titleCount: 0
 })
+
+// 成绩等级分布
+const gradeDistCourseId = ref(null)
+const courseList = ref([])
+const gradeDistStats = reactive({ total: 0, passRate: '' })
 
 // 加载状态
 const loading = reactive({
@@ -318,8 +362,9 @@ onMounted(() => {
   
   if (hasTeacherPermission.value) {
     fetchTeacherStatistics()
+    fetchCourseList()
   }
-  
+
   window.addEventListener('resize', handleResize)
 })
 
@@ -344,6 +389,9 @@ onUnmounted(() => {
   if (titleChart) {
     titleChart.dispose()
   }
+  if (gradeDistChart) {
+    gradeDistChart.dispose()
+  }
 })
 
 // 处理窗口大小变化，重新绘制图表
@@ -359,6 +407,9 @@ const handleResize = () => {
   }
   if (titleChart) {
     titleChart.resize()
+  }
+  if (gradeDistChart) {
+    gradeDistChart.resize()
   }
 }
 
@@ -684,6 +735,54 @@ const initTitleChart = (titleData) => {
   
   titleChart.setOption(option)
 }
+
+// 加载课程列表（管理员选课用下拉框）
+const fetchCourseList = async () => {
+  await request.get('/course/all', {}, {
+    onSuccess: (res) => { courseList.value = res }
+  })
+}
+
+// 获取成绩等级分布数据
+const fetchGradeDistribution = async () => {
+  if (!gradeDistCourseId.value) return
+  await request.get('/score/distribution', {
+    courseId: gradeDistCourseId.value
+  }, {
+    onSuccess: (res) => {
+      gradeDistStats.total = res.total || 0
+      gradeDistStats.passRate = res.passRate || '--'
+      nextTick(() => initGradeDistChart(res.gradeDistribution || {}))
+    }
+  })
+}
+
+// 成绩等级分布饼图
+const initGradeDistChart = (data) => {
+  const dom = document.getElementById('grade-dist-chart')
+  if (!dom) return
+  if (gradeDistChart) gradeDistChart.dispose()
+  gradeDistChart = echarts.init(dom)
+
+  const chartData = Object.entries(data).map(([k, v]) => ({ name: k + '等', value: v }))
+  // 按 A→E 排序
+  const order = { 'A等':1,'B等':2,'C等':3,'D等':4,'E等':5,'无等级等':6 }
+  chartData.sort((a, b) => (order[a.name]||9) - (order[b.name]||9))
+
+  gradeDistChart.setOption({
+    tooltip: { trigger: 'item', formatter: '{b}: {c}人 ({d}%)' },
+    legend: { orient: 'horizontal', bottom: 'bottom' },
+    series: [{
+      name: '成绩等级分布', type: 'pie', radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      itemStyle: { borderRadius: 8, borderColor: '#fff', borderWidth: 2 },
+      label: { show: false, position: 'center' },
+      emphasis: { label: { show: true, fontSize: 16, fontWeight: 'bold' } },
+      data: chartData
+    }],
+    color: ['#22c55e', '#3b82f6', '#eab308', '#f97316', '#ef4444', '#94a3b8']
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -789,7 +888,7 @@ const initTitleChart = (titleData) => {
   
   .chart-row {
     margin-bottom: 20px;
-    
+
     .chart-card {
       .card-header {
         display: flex;
@@ -797,10 +896,22 @@ const initTitleChart = (titleData) => {
         align-items: center;
         font-weight: bold;
       }
-      
+
       .chart-container {
         height: 300px;
       }
+    }
+  }
+
+  .grade-stats {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 250px;
+    .grade-stat-item {
+      text-align: center;
+      .grade-stat-label { display: block; font-size: 14px; color: #909399; margin-bottom: 12px; }
+      .grade-stat-value { font-size: 42px; font-weight: bold; color: #409eff; }
     }
   }
 }

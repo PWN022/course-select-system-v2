@@ -18,6 +18,7 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 @Service
 public class ScoreService {
@@ -216,7 +217,37 @@ public class ScoreService {
                 .distinct()
                 .toList();
     }
-    
+
+    // 按课程和学期统计各等级人数占比与及格率
+    public Map<String, Object> getGradeDistribution(Long courseId, String semester) {
+        Map<String, Object> result = new HashMap<>();
+
+        LambdaQueryWrapper<Score> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Score::getCourseId, courseId);
+        if (StringUtils.isNotBlank(semester)) wrapper.eq(Score::getSemester, semester);
+
+        List<Score> scores = scoreMapper.selectList(wrapper);
+        if (scores.isEmpty()) {
+            result.put("total", 0);
+            result.put("gradeDistribution", new HashMap<>());
+            result.put("passRate", "0%");
+            return result;
+        }
+
+        // 按等级分组统计人数
+        Map<String, Long> gradeCount = scores.stream()
+                .collect(Collectors.groupingBy(s -> s.getGrade() != null ? s.getGrade() : "无等级",
+                        Collectors.counting()));
+
+        long total = scores.size();
+        long passCount = scores.stream().filter(s -> s.getScore() != null && s.getScore().doubleValue() >= 60).count();
+
+        result.put("total", total);
+        result.put("gradeDistribution", gradeCount);
+        result.put("passRate", String.format("%.1f%%", passCount * 100.0 / total));
+        return result;
+    }
+
     /**
      * 填充成绩关联信息
      */

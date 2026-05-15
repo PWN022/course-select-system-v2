@@ -49,7 +49,7 @@ public class StudentController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Long classId) {
 
-        // ============ 【强制拦截越权查询】 ============
+        // ============ 强制拦截越权查询 ============
         Long currentTeacherId = getCurrentTeacherId();
         if (currentTeacherId != null) {
             headerTeacherId = String.valueOf(currentTeacherId);

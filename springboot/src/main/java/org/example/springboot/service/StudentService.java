@@ -161,7 +161,7 @@ public class StudentService {
 
     /**
      * 获取所有学生列表（用于下拉选择）
-     * 【修复越权漏洞并统一参数类型为 Long】
+     * 修复越权漏洞并统一参数类型为 Long
      * @return 学生列表
      */
     public List<Student> getAllStudents(Long teacherId) {

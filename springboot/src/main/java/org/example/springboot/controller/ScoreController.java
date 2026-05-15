@@ -80,4 +80,11 @@ public class ScoreController {
     public Result<?> getStudentStatistics(@PathVariable Long studentId) {
         return Result.success(scoreService.getStudentStatistics(studentId));
     }
+
+    // 按课程统计等级分布——对应论文 Group By 聚合
+    @GetMapping("/distribution")
+    public Result<?> getGradeDistribution(@RequestParam Long courseId,
+                                           @RequestParam(required = false) String semester) {
+        return Result.success(scoreService.getGradeDistribution(courseId, semester));
+    }
 } 
