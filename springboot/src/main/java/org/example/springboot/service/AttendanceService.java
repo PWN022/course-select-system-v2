@@ -9,6 +9,7 @@ import org.example.springboot.entity.Class;
 import org.example.springboot.exception.ServiceException;
 import org.example.springboot.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -137,15 +138,19 @@ public class AttendanceService {
             }
         }
 
-        LambdaQueryWrapper<Attendance> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Attendance::getStudentId, attendance.getStudentId())
-                .eq(Attendance::getCourseId, attendance.getCourseId())
-                .eq(Attendance::getAttendanceDate, attendance.getAttendanceDate());
-
-        if (attendanceMapper.selectCount(queryWrapper) > 0) {
-            throw new ServiceException("该学生在当日该课程已有考勤记录");
+        // 先尝试插入，联合唯一索引冲突则自动转为更新覆盖
+        try {
+            attendanceMapper.insert(attendance);
+        } catch (DuplicateKeyException e) {
+            LambdaQueryWrapper<Attendance> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(Attendance::getStudentId, attendance.getStudentId())
+                    .eq(Attendance::getCourseId, attendance.getCourseId())
+                    .eq(Attendance::getAttendanceDate, attendance.getAttendanceDate());
+            Attendance existing = attendanceMapper.selectOne(queryWrapper);
+            existing.setStatus(attendance.getStatus());
+            if (attendance.getRemark() != null) existing.setRemark(attendance.getRemark());
+            attendanceMapper.updateById(existing);
         }
-        attendanceMapper.insert(attendance);
     }
 
     @Transactional

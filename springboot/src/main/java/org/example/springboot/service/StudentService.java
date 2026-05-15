@@ -72,7 +72,7 @@ public class StudentService {
             queryWrapper.eq(Student::getClassId, classId);
         }
 
-        // ============ 【分类打标签逻辑】 ============
+        // 分类打标签逻辑
         Set<Long> allStudentIds = new HashSet<>();
         Set<Long> headStudentIds = new HashSet<>(); // 记录班学生ID
         Set<Long> courseStudentIds = new HashSet<>(); // 记录选课学生ID
@@ -133,7 +133,7 @@ public class StudentService {
             map.put("className", student.getClassName());
             map.put("createTime", student.getCreateTime());
 
-            // ======== 【核心：给学生发“身份证”】 ========
+            // 区分学生
             if (StringUtils.isNotBlank(headerTeacherId)) {
                 boolean isHead = headStudentIds.contains(student.getId());
                 boolean isCourse = courseStudentIds.contains(student.getId());

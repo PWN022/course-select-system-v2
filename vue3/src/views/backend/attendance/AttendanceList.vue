@@ -369,6 +369,14 @@ watch(() => batchForm.studentIds, (newVal) => {
   isIndeterminate.value = checkedCount > 0 && checkedCount < studentOptions.value.length
 })
 
+// 选课程后联查选课表，只加载该课程已通过的学生
+watch(() => form.courseId, (newVal) => {
+  if (newVal) { form.studentId = ''; fetchStudents(newVal) } else { fetchStudents() }
+})
+watch(() => batchForm.courseId, (newVal) => {
+  if (newVal) { batchForm.studentIds = []; fetchStudents(newVal) } else { fetchStudents() }
+})
+
 // 初始化
 onMounted(() => {
   fetchAttendance()
@@ -429,17 +437,25 @@ const fetchAttendance = async () => {
   }
 }
 
-// 获取学生列表
-const fetchStudents = async () => {
+// 获取学生列表，传 courseId 时联查选课表只取已通过的学生
+const fetchStudents = async (courseId) => {
   try {
-    const params = {
-      teacherId: userStore.isTeacher ?  userStore.teacherInfo?.id:null
+    if (courseId) {
+      await request.get(`/student-course/course/${courseId}`, {}, {
+        onSuccess: (res) => {
+          studentOptions.value = (res || []).map(sc => ({
+            id: sc.studentId,
+            name: sc.studentName,
+            studentNo: sc.studentNo
+          }))
+        }
+      })
+    } else {
+      const params = { teacherId: userStore.isTeacher ? userStore.teacherInfo?.id : null }
+      await request.get('/student/all', params, {
+        onSuccess: (res) => { studentOptions.value = res || [] }
+      })
     }
-    await request.get('/student/all', params, {
-      onSuccess: (res) => {
-        studentOptions.value = res || []
-      }
-    })
   } catch (error) {
     console.error('获取学生列表失败:', error)
   }
