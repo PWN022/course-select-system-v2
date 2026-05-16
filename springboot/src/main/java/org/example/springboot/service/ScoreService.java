@@ -227,25 +227,32 @@ public class ScoreService {
     public Map<String, Object> getGradeDistribution(Long courseId, String semester) {
         Map<String, Object> result = new HashMap<>();
 
-        LambdaQueryWrapper<Score> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Score::getCourseId, courseId);
-        if (StringUtils.isNotBlank(semester)) wrapper.eq(Score::getSemester, semester);
+        // GROUP BY grade 聚合统计各等级人数
+        List<Map<String, Object>> rows = scoreMapper.countByGrade(courseId,
+                StringUtils.isNotBlank(semester) ? semester : null);
 
-        List<Score> scores = scoreMapper.selectList(wrapper);
-        if (scores.isEmpty()) {
+        Map<String, Long> gradeCount = new HashMap<>();
+        long total = 0;
+        for (Map<String, Object> row : rows) {
+            String grade = (String) row.get("grade");
+            Long count = ((Number) row.get("count")).longValue();
+            gradeCount.put(grade != null ? grade : "无等级", count);
+            total += count;
+        }
+
+        if (total == 0) {
             result.put("total", 0);
             result.put("gradeDistribution", new HashMap<>());
             result.put("passRate", "0%");
             return result;
         }
 
-        // 按等级分组统计人数
-        Map<String, Long> gradeCount = scores.stream()
-                .collect(Collectors.groupingBy(s -> s.getGrade() != null ? s.getGrade() : "无等级",
-                        Collectors.counting()));
-
-        long total = scores.size();
-        long passCount = scores.stream().filter(s -> s.getScore() != null && s.getScore().doubleValue() >= 60).count();
+        // 及格人数单独统计（>=60分的算及格）
+        LambdaQueryWrapper<Score> passWrapper = new LambdaQueryWrapper<>();
+        passWrapper.eq(Score::getCourseId, courseId)
+                   .ge(Score::getScore, 60);
+        if (StringUtils.isNotBlank(semester)) passWrapper.eq(Score::getSemester, semester);
+        long passCount = scoreMapper.selectCount(passWrapper);
 
         result.put("total", total);
         result.put("gradeDistribution", gradeCount);
