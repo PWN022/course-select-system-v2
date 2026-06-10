@@ -58,12 +58,12 @@ export const useUserStore = defineStore('user', {
         console.error('Error saving user info to localStorage', e)
       }
 
-      // If user is a teacher, fetch teacher information
+      // teacher
       if (this.userInfo?.roleCode === 'TEACHER' && this.userInfo?.id) {
         this.fetchTeacherInfo(this.userInfo.id)
       }
 
-      // If user is a student, fetch student information
+      // student
       if (this.userInfo?.roleCode === 'STUDENT' && this.userInfo?.id) {
         this.fetchStudentInfo(this.userInfo.id)
       }

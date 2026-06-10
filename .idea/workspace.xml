@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="cbe07639-f900-4001-8b13-22ff5ddd1ef7" name="更改" comment="修复注册学号">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/ScoreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/ScoreController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/ScoreMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/ScoreMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/ScoreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/ScoreService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue3/src/store/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue3/src/store/user.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,6 +172,8 @@
       <workItem from="1778861693795" duration="2553000" />
       <workItem from="1778890752337" duration="883000" />
       <workItem from="1778892557625" duration="3260000" />
+      <workItem from="1778896149333" duration="3867000" />
+      <workItem from="1778904952140" duration="5554000" />
     </task>
     <servers />
   </component>
